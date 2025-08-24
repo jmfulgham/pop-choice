@@ -1,0 +1,23 @@
+
+.questions-container {
+    font-family: "American Typewriter", "Roboto Light", Serif, serif;
+}
+
+.question-text-input {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    margin-bottom: 1.5rem;
+}
+
+textarea {
+    resize: none;
+    padding: 1rem;
+    border-radius: 10px;
+    height: 78px;
+    width: 100%;
+    background-color: #3B4877;
+    margin-top: 0.3rem;
+    color: white;
+    font-family: "American Typewriter", "Roboto Light", Serif, serif;
+}
