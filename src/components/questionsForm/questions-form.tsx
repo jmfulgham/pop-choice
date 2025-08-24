@@ -1,28 +1,16 @@
-import {useState} from 'react'
 import questionsArr from "./questions.json";
 import './styles.css'
+import type {QuestionsFormProps} from "../../types.ts";
 
-interface Questions {
-    question: string,
-    answer: null | string;
-}
 
-const QuestionsForm = () => {
-    const [formValues, setFormValues] = useState<Questions[]>(questionsArr);
+const QuestionsForm = ({formValues, setFormValues}: QuestionsFormProps) => {
 
     const handleChange = (event) => {
         //name matches the question in the state
         const {name, value} = event.target;
 
-        // loop through state and find matching question
-        // update its answer while maintaining previous state
-
         setFormValues((prevState) => (prevState.map((obj) => (
             obj.question === name ? {...obj, answer: value} : obj))))
-    }
-
-    const handleClick = ()=> {
-        console.log("Clicked")
     }
 
     return (<div className={"questions-container"}>
@@ -33,7 +21,6 @@ const QuestionsForm = () => {
                         <textarea name={obj.question} onChange={handleChange}/>
                     </div>
                 ))}
-                <button onClick={handleClick}>Let's Go!</button>
             </form>
         </div>
 
