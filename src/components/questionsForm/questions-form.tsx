@@ -7,7 +7,7 @@ interface Questions {
     answer: null | string;
 }
 
-const Questions = () => {
+const QuestionsForm = () => {
     const [formValues, setFormValues] = useState<Questions[]>(questionsArr);
 
     const handleChange = (event) => {
@@ -21,14 +21,19 @@ const Questions = () => {
             obj.question === name ? {...obj, answer: value} : obj))))
     }
 
+    const handleClick = ()=> {
+        console.log("Clicked")
+    }
+
     return (<div className={"questions-container"}>
             <form onSubmit={e => e.preventDefault()}>
                 {questionsArr.map((obj, index) => (
                     <div className={"question-text-input"} key={index}>
                         {obj.question}
-                            <textarea name={obj.question} onChange={handleChange}/>
+                        <textarea name={obj.question} onChange={handleChange}/>
                     </div>
                 ))}
+                <button onClick={handleClick}>Let's Go!</button>
             </form>
         </div>
 
@@ -36,4 +41,4 @@ const Questions = () => {
 }
 
 
-export default Questions
+export default QuestionsForm
