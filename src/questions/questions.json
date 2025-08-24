@@ -1,11 +1,14 @@
 [
   {
-    "question": "What’s your favorite movie and why?"
+    "question": "What’s your favorite movie and why?",
+    "answer": " "
   },
   {
-    "question": "Are you in the mood for something new or a classic?"
+    "question": "Are you in the mood for something new or a classic?",
+    "answer": " "
   },
   {
-    "question": "Do you wanna have fun or do you want something serious?"
+    "question": "Do you wanna have fun or do you want something serious?",
+    "answer": " "
   }
 ]
