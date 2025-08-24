@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 })
 
 app.post("/", (req, res)=>{
-    res.send("You got a hit")
+    res.send(JSON.stringify({body: "You got a hit"}))
 })
 
 app.listen(port, () => {
