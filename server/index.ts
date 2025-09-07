@@ -1,21 +1,16 @@
-import { openai, supabase } from './config';
+import {main}  from "./util/embeddings";
 import express from 'express';
 const app = express()
 const port = 8080
 
-import movies from "./content";
-import {createEmbeddings}  from "./util/embeddings";
-
 app.use(express.json())
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.send('Hello World!')
-    createEmbeddings(movies);
-    console.log("Hit!")
+   await main()
 })
 
 app.post("/", (req, res)=>{
     const {body} = req;
-    createEmbeddings(movies);
     res.send(JSON.stringify({body: "You got a hit"}))
 })
 

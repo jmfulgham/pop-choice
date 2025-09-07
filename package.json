@@ -9,10 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@langchain/core": "^0.3.75",
+    "@langchain/textsplitters": "^0.1.0",
     "@supabase/supabase-js": "^2.56.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "langchain": "^0.3.33",
     "openai": "^5.15.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
