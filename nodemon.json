@@ -1,0 +1,8 @@
+{
+  "watch": ["server"],
+  "ext": "ts,tsx,js,json",
+  "execMap": {
+    "ts": "ts-node-esm",
+    "tsx": "ts-node-esm"
+  }
+}
