@@ -5,14 +5,14 @@ const port = 8080
 
 app.use(express.json());
 app.get('/', async (req, res) => {
-    res.send('Hello World!')
+    res.send('Movie DB updated!')
    await main()
 });
 
 app.post("/", async (req, res)=>{
     const {body} = req;
-   await handleUserAnswers(body)
-    res.send(JSON.stringify({body: "You got a hit"}))
+    const matches = await handleUserAnswers(body)
+    res.send(JSON.stringify({results: matches}))
 });
 
 app.listen(port, () => {
