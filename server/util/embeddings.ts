@@ -14,21 +14,25 @@ interface EmbeddingResponse {
     embedding: number[]
 }
 
-export const main = async ()=>{
-  const chunkData = await chunkContent(movies)
-    const output= await createEmbeddingsForContent(chunkData);
-    await addEmbeddingsToDatabase(output)
-
+interface UserResponse {
+    question: string;
+    answer: string;
 }
 
-const chunkContent = async (movieList: Movie[])=> {
+export const main = async ()=>{
+  const chunkData = await chunkMovieContent(movies)
+    const output= await createEmbeddingsForContent(chunkData);
+    await addEmbeddingsToDatabase(output)
+}
+
+const chunkMovieContent = async (movieList: Movie[])=> {
     if (!movieList.length) {
         throw new Error("No content submitted for creating embeddings")
     }
 
     const splitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 115,
-        chunkOverlap: 8,
+        chunkSize: 200,
+        chunkOverlap: 25,
     });
 
    const output = movieList.map((movie) => movie.content.concat(" ", movie.releaseYear))
@@ -36,16 +40,14 @@ const chunkContent = async (movieList: Movie[])=> {
 
 }
 
-export const createEmbeddingsForContent = async (documentsList: Document[]) => {
+export const createEmbeddingsForContent = (documentsList: Document[]) => {
     try {
         return Promise.all(documentsList.map(async (document) => {
-            console.log(document)
             const resp = await openai.embeddings.create({
                 model: "text-embedding-3-small",
                 input: document.pageContent
             })
             return {
-
                 content: document.pageContent,
                 embedding: resp.data[0].embedding
             }
@@ -71,4 +73,33 @@ const addEmbeddingsToDatabase = async (embeddings: EmbeddingResponse[]) => {
     }
 }
 
+const chunkUserData = async(data: UserResponse[])=>{
+    const splitter = new RecursiveCharacterTextSplitter({
+        chunkSize: 115,
+        chunkOverlap: 8,
+    });
+    return await splitter.createDocuments(data.map(d => d.question.concat(" answer: ", d.answer)));
+}
 
+export const handleUserAnswers = async (userAnswers: UserResponse[])=>{
+    const userChunkData = await chunkUserData(userAnswers);
+    const userEmbeddings = await createEmbeddingsForContent(userChunkData);
+    return await fetchMatches(userEmbeddings);
+}
+
+const fetchMatches = async (embedding: EmbeddingResponse[]) => {
+
+    const results: any = await Promise.all(embedding.map(async (embed) => {
+             try {
+                const {data} = await supabase.rpc('match_movie_recommendations', {
+                    query_embedding: embed.embedding,
+                    match_threshold: 0.20,
+                    match_count: 5
+                });
+                return data;
+            } catch(e) {
+                throw new Error("There was an error finding movie recommendations")
+            }
+    }))
+    return results.flat()
+}

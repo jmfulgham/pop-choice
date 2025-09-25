@@ -7,8 +7,11 @@ import {useSubmitForm} from "./hooks/useSubmitForm.ts";
 
 function App() {
     const [formValues, setFormValues] = useState<Questions[]>(questionsArr);
-    const handleClick = ()=> {
-        useSubmitForm(formValues)
+    const [movieRecommendations, setMovieRecommendations] = useState([])
+
+    const handleClick = async ()=> {
+        const response = await useSubmitForm(formValues)
+        console.log(response)
     }
 
     return (
