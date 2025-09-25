@@ -31,7 +31,7 @@ const chunkMovieContent = async (movieList: Movie[])=> {
     }
 
     const splitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 125,
+        chunkSize: 200,
         chunkOverlap: 25,
     });
 
@@ -84,9 +84,9 @@ const chunkUserData = async(data: UserResponse[])=>{
 export const handleUserAnswers = async (userAnswers: UserResponse[])=>{
     const userChunkData = await chunkUserData(userAnswers);
     const userEmbeddings = await createEmbeddingsForContent(userChunkData);
-    const matches = await fetchMatches(userEmbeddings);
-    return matches
+    return await fetchMatches(userEmbeddings);
 }
+
 const fetchMatches = async (embedding: EmbeddingResponse[]) => {
 
     const results: any = await Promise.all(embedding.map(async (embed) => {
@@ -94,17 +94,12 @@ const fetchMatches = async (embedding: EmbeddingResponse[]) => {
                 const {data} = await supabase.rpc('match_movie_recommendations', {
                     query_embedding: embed.embedding,
                     match_threshold: 0.20,
-                    match_count: 4
+                    match_count: 5
                 });
-                // const matches = data.map((d: EmbeddingResponse) => d.content).join("\n")
                 return data;
             } catch(e) {
                 throw new Error("There was an error finding movie recommendations")
             }
     }))
     return results.flat()
-}
-
-const createUserResponse = async() => {
-
 }

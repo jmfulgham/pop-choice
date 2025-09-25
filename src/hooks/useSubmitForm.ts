@@ -1,6 +1,4 @@
 export const useSubmitForm = async (stuff)=> {
-   console.log("clicked", stuff)
-
     const response=  await fetch("/api", {
         method: "POST",
         headers: {
@@ -8,6 +6,5 @@ export const useSubmitForm = async (stuff)=> {
         },
         body: JSON.stringify(stuff)
     });
-
-   console.log(await response.json());
+   return await response.json();
 }
