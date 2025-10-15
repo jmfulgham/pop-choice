@@ -1,5 +1,5 @@
 # Pop Choice
-#### An AI powered movie recommendation tool. (WIP)
+#### An AI powered movie recommendation tool. (Work in progress, personal side project)
 
 ### Tech used
 - React
